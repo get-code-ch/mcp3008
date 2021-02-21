@@ -32,7 +32,7 @@ func New(device string, vRef float64, name string, description string) (Mcp3008,
 	return mcp3008, nil
 }
 
-func ReadConversionRegister(module Mcp3008, channel int) float64 {
+func ReadAnalog(module Mcp3008, channel int) float64 {
 	if channel > 7 || channel < 0 {
 		return -1
 	}
@@ -42,6 +42,7 @@ func ReadConversionRegister(module Mcp3008, channel int) float64 {
 	if err := module.Conn.Tx(write, read); err != nil {
 		return -1.0
 	}
-	// Use read.
+
+	//Return result in volt
 	return float64((int(read[1])<<8)+int(read[2])) * module.VRef / 1024
 }
